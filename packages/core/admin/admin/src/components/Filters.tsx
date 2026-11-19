@@ -187,9 +187,10 @@ const PopoverImpl = ({ zIndex }: { zIndex?: number }) => {
   }
 
   const handleSubmit = (data: FilterFormData) => {
-    const value = FILTERS_WITH_NO_VALUE.includes(data.filter) ? 'true' : (data.value ?? '');
+    // Boolean filters carry a real `false`, which is falsy: only missing/empty input means no value.
+    const value = FILTERS_WITH_NO_VALUE.includes(data.filter) ? 'true' : data.value;
 
-    if (!value) {
+    if (value === undefined || value === null || value === '') {
       return;
     }
 
